@@ -1,0 +1,4 @@
+pyqt5
+PySimpleGUI
+PySide2
+# PySimpleGUIQt
