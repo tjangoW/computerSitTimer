@@ -48,7 +48,7 @@ class Ui:
                    sg.Button('Reset', button_color=('white', '#FF8800'))],
                   [sg.Quit()]]
         self.window = sg.Window(title='Simple Clock', layout=layout, keep_on_top=self.core.keepOnTop,
-                                icon="./media/icon-play.png")  # , icon=)
+                                icon="computerSitTimer/media/icon-play.png")  # , icon=)
         self.normalFontColor: Final = self.window[self.currentTimeKey].TextColor
         self.run_window_loop()
 
@@ -210,7 +210,7 @@ class MainTray:
         elif update_time:
             update_kwargs.update(tooltip=self.core.updateTime()[1])
         if update_icon:
-            update_kwargs.update(filename=f"./media/icon-{'play' if self.core.is_running() else 'stop'}.png")
+            update_kwargs.update(filename=f"computerSitTimer/media/icon-{'play' if self.core.is_running() else 'stop'}.png")
         if update_menu:
             update_kwargs.update(menu=self.createMenuList())
         return update_kwargs
@@ -240,7 +240,7 @@ class MainTray:
 
 if __name__ == '__main__':
     # well, I run this for debug, so 5 seconds
-    # actual use is through main.py
+    # actual use is through __main__.py
     log.basicConfig(format='%(levelname)s:%(message)s', level=log.DEBUG)
     m = MainTray(delta(seconds=5))
 

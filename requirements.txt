@@ -3,3 +3,5 @@
 # PySide2
 simpleaudio
 PySimpleGUIQt
+typing
+pydub
