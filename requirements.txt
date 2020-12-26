@@ -1,4 +1,5 @@
-pyqt5
-PySimpleGUI
-PySide2
-# PySimpleGUIQt
+# pyqt5
+# PySimpleGUI
+# PySide2
+simpleaudio
+PySimpleGUIQt
