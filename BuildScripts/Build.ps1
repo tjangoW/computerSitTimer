@@ -8,8 +8,3 @@ rm -Recurse -Force *.egg-info
 python .\setup.py sdist bdist_wheel
 pip uninstall computerSitTimer
 pip install .\dist\computerSitTimer-*.whl
-
-#pip install twine
-#python -m twine upload --repository testpypi dist/*
-#pip install -i https://test.pypi.org/simple/ computerSitTimer
-#python -m computerSitTimer
