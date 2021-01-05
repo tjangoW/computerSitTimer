@@ -1,13 +1,15 @@
 #which python
 #which pip
-#pip install setuptools wheel
-#pip install twine
+pip install setuptools wheel
 
 rm -Recurse -Force build
 rm -Recurse -Force dist
 rm -Recurse -Force *.egg-info
 python .\setup.py sdist bdist_wheel
-#python -m twine upload --repository testpypi dist/*
+pip uninstall computerSitTimer
+pip install .\dist\computerSitTimer-*.whl
 
-#pip install -i https://test.pypi.org/simple/ computerTimer-tjango
-#python -m computerTimer-tjango
+#pip install twine
+#python -m twine upload --repository testpypi dist/*
+#pip install -i https://test.pypi.org/simple/ computerSitTimer
+#python -m computerSitTimer

@@ -5,3 +5,4 @@ simpleaudio
 PySimpleGUIQt
 typing
 pydub
+wheel
