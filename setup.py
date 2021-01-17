@@ -9,7 +9,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="computerSitTimer",
-    version="0.1.1",
+    version="0.1.2",
     author="tjango",
     description="A simple timer in tray to prevent sitting too long.",
     long_description=long_description,
