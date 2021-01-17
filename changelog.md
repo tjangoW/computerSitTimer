@@ -28,7 +28,6 @@ Types of changes:
 ### Added
 - everything! (initial commit)
 
-[Unreleased]: https://github.com/tjangoW/computerSitTimer/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/tjangoW/computerSitTimer/compare/v0.3.0...v1.0.0
-[0.0.2]: https://github.com/tjangoW/computerSitTimer/compare/v0.1.1...v0.1.0
+[Unreleased]: https://github.com/tjangoW/computerSitTimer/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/tjangoW/computerSitTimer/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/tjangoW/computerSitTimer/releases/tag/v0.1.0

@@ -7,4 +7,5 @@ rm -Recurse -Force dist
 rm -Recurse -Force *.egg-info
 python .\setup.py sdist bdist_wheel
 pip uninstall computerSitTimer
-pip install .\dist\computerSitTimer-*.whl
+twine check .\dist\*
+echo "pip install .\dist\computerSitTimer-*.whl"
