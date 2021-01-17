@@ -1,12 +1,12 @@
 from enum import Enum
 from queue import Queue
 import random
-from typing import Dict, Any, List, Optional, Final
+from typing import Dict, Any, List, Optional
 
 
 class _Event:
     worker: List[int]
-    name: Final[Enum]
+    name: Enum
 
     def __init__(self, event: Enum, worker: List[int]):
         self.name = event

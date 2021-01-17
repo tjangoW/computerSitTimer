@@ -9,7 +9,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="computerSitTimer",
-    version="0.1.1",
+    version="0.1.2",
     author="tjango",
     description="A simple timer in tray to prevent sitting too long.",
     long_description=long_description,
@@ -27,13 +27,16 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         'Development Status :: 3 - Alpha',
+        "Intended Audience :: End Users/Desktop",
+        "Natural Language :: English",
+        "Topic :: Desktop Environment",
     ],
     entry_points={
         "gui_scripts": [
             "computerSitTimer = computerSitTimer.__main__:main"
         ]
     },
-    python_requires='>=3.5',  # typing since 3.5, enum since 3.4,
+    python_requires='~=3.5',  # typing since 3.5, enum since 3.4,
     package_data={
         # https://pythonhosted.org/setuptools/setuptools.html#including-data-files
         # If any package contains *.png files, include them:

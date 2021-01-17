@@ -1,7 +1,7 @@
 from datetime import timedelta as delta, timedelta
 from datetime import datetime as dt, datetime
 from enum import Enum
-from typing import Optional, Final, Dict, Union
+from typing import Optional, Dict, Union
 
 
 class CountDowner:
@@ -11,8 +11,8 @@ class CountDowner:
     _previous_update_time: Optional[datetime]
 
     class _Status(Enum):
-        RUNNING: Final = 1
-        STOPPED: Final = 0
+        RUNNING = 1
+        STOPPED = 0
 
     def __init__(self, duration: delta = delta(hours=1)):
         self.duration = duration
@@ -51,7 +51,7 @@ class CountDowner:
     def _update_time(self) -> None:
         if self.status == self._Status.STOPPED:
             return
-        time_passed: Final = dt.now() - self._previous_update_time
+        time_passed = dt.now() - self._previous_update_time
         self._remaining_time -= time_passed
         self._previous_update_time += time_passed
 
