@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Optional, Any
+from typing import Optional, Final, Any
 from datetime import timedelta as delta, timedelta
 
 from computerSitTimer.AudioPlayer import AudioPlayer
@@ -21,9 +21,9 @@ class CoreBI:
         """
         Generally could have used += 1 to transit from one to the other, but for clarity it is not used here.
         """
-        no_noti = 0
-        to_noti = 1
-        has_noti_ed = 2
+        no_noti: Final = 0
+        to_noti: Final = 1
+        has_noti_ed: Final = 2
 
     def __init__(self, timer_time: timedelta, sound_on: bool = False, sound_file: Optional[str] = None):
         self._timer = CountDowner(timer_time)
@@ -86,7 +86,7 @@ class CoreBI:
                  seconds_left: seconds left till time is up
         """
         time_str, seconds_left = self._timer.get_time()
-        to_notify = (seconds_left < 0) and (self._noti_state == self._NotifyState.no_noti)
+        to_notify: Final = (seconds_left < 0) and (self._noti_state == self._NotifyState.no_noti)
         if to_notify:
             self._noti_state = self._NotifyState.to_noti
             self.noti_player.play()
