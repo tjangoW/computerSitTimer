@@ -2,7 +2,7 @@ import logging as log
 # from threading import Thread
 # noinspection PyPep8Naming
 import PySimpleGUIQt as sg
-from typing import Optional, List, Final, Dict, Union
+from typing import Optional, List, Dict, Union
 
 from PySimpleGUIQt import SystemTray
 from datetime import timedelta as delta, timedelta
@@ -20,19 +20,19 @@ class Const:
     """
     A namespace instead of a class to have all constants
     """
-    timeout_ui: Final = 333  # in milliseconds
-    timeout_bg: Final = 1000  # in milliseconds
+    timeout_ui = 333  # in milliseconds
+    timeout_bg = 1000  # in milliseconds
 
 
 class Ui:
     core: CoreBI
 
-    currentTimeKey: Final = '_time_'
-    msgKey: Final = '_msg_'
-    negativeFontColor: Final = '#df0000'
-    font: Final = 'Helvetica'
-    durationKey: Final = "_duration_"
-    durationFormat: Final = "mm, mm:ss or hh:mm:ss"
+    currentTimeKey = '_time_'
+    msgKey = '_msg_'
+    negativeFontColor = '#df0000'
+    font = 'Helvetica'
+    durationKey = "_duration_"
+    durationFormat = "mm, mm:ss or hh:mm:ss"
 
     def __init__(self, core: CoreBI):
         self.core = core
@@ -50,7 +50,7 @@ class Ui:
                   [sg.Quit()]]
         self.window = sg.Window(title='Simple Clock', layout=layout, keep_on_top=self.core.keepOnTop,
                                 icon=get_abs_path("icon-play.png"))  # , icon=)
-        self.normalFontColor: Final = self.window[self.currentTimeKey].TextColor
+        self.normalFontColor = self.window[self.currentTimeKey].TextColor
         self.run_window_loop()
 
     def bringToFront(self) -> None:
@@ -228,7 +228,7 @@ class MainTray:
             self._state = self._getTrayState()
             return
 
-        old_state: Final = self._state
+        old_state = self._state
         self._state = self._getTrayState()
         update_kwargs = {}
         if old_state["timer"] != self._state["timer"]:
