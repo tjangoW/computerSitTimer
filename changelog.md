@@ -17,6 +17,7 @@ Types of changes:
 ## [Unreleased]
 ### Added
 - changelog file
+- GitHub actions
 ### Fixed
 - removed `Final` from `typing` for compatibility with Python<3.8
 
