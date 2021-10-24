@@ -5,14 +5,14 @@ from typing import Any
 from computerSitTimer.CountDowner import CountDowner
 
 
-class CoreBI:
+class TimerInterface:
     """
     An Ui-independent interface for the timer with all functionality.
     Then ui will just be representation of this core
     """
     start_minimised: bool
     keepOnTop: bool
-    _noti_state: 'CoreBI._NotifyState'
+    _noti_state: 'TimerInterface._NotifyState'
     _timer: CountDowner
 
     class _NotifyState(Enum):
@@ -101,4 +101,4 @@ class CoreBI:
 
 
 if __name__ == '__main__':
-    c = CoreBI(delta(seconds=5))
+    c = TimerInterface(delta(seconds=5))

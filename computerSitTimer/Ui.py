@@ -7,7 +7,7 @@ from typing import Dict, List, Optional, Union
 import PySimpleGUIQt as sg
 from PySimpleGUIQt import SystemTray
 
-from computerSitTimer.CoreWithoutUi import CoreBI
+from computerSitTimer.CoreWithoutUi import TimerInterface
 from computerSitTimer.media.MediaHelper import get_icon_path
 
 log.warning(sg.version)
@@ -25,7 +25,7 @@ class Const:
 
 
 class Ui:
-    core: CoreBI
+    core: TimerInterface
 
     currentTimeKey = '_time_'
     msgKey = '_msg_'
@@ -34,7 +34,7 @@ class Ui:
     durationKey = "_duration_"
     durationFormat = "mm, mm:ss or hh:mm:ss"
 
-    def __init__(self, core: CoreBI):
+    def __init__(self, core: TimerInterface):
         self.core = core
 
         layout = [[sg.Text('', key=self.msgKey, size=(20, 1), auto_size_text=True, font=(self.font, 20),
@@ -130,12 +130,12 @@ class MainTray:
     So now tray will be the master, and when time is up, it will make a (blocking) call to show the UI.
     Tray will run at all time while Ui is not required.
     """
-    core: CoreBI
+    core: TimerInterface
     tray: Optional[SystemTray]
     _state: Dict[str, bool]
 
     def __init__(self, timer_time: timedelta):
-        self.core = CoreBI(timer_time=timer_time)
+        self.core = TimerInterface(timer_time=timer_time)
         self.tray: Optional[sg.SystemTray] = None
         self._state = self._getTrayState()
 
