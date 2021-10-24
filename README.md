@@ -1,7 +1,8 @@
 # Computer Sit Timer
 ![][python-versions]
-![][pypi-badge]
+![][pypi-badge]\
 ![][gh-action-test]
+[![codecov](https://codecov.io/gh/tjangoW/computerSitTimer/branch/master/graph/badge.svg?token=1DPRMOCYQZ)](https://codecov.io/gh/tjangoW/computerSitTimer)
 
 
 This is a simple countdown timer that pops up 
