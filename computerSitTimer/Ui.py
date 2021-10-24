@@ -36,11 +36,13 @@ class Ui:
 
     def __init__(self, core: TimerInterface):
         self.core = core
+        self.keepOnTop = True
+        self.start_minimised = True
 
         layout = [[sg.Text('', key=self.msgKey, size=(20, 1), auto_size_text=True, font=(self.font, 20),
                            justification='center')],
                   [sg.Text('Current time: '), sg.Text('', key=self.currentTimeKey, size=(20, 1))],
-                  [sg.Text('Full time: '), sg.Input(self.core.getSetting("timer_time"), key=self.durationKey,
+                  [sg.Text('Full time: '), sg.Input(self.core.get_full_duration(), key=self.durationKey,
                                                     tooltip=f"in the format {self.durationFormat}",
                                                     enable_events=True),
                    sg.Button('Set', button_color=('white', '#FF8800'), bind_return_key=True)],
@@ -48,7 +50,7 @@ class Ui:
                    sg.Button('Stop', button_color=('white', '#FF0000')),
                    sg.Button('Reset', button_color=('white', '#FF8800'))],
                   [sg.Quit()]]
-        self.window = sg.Window(title='Simple Clock', layout=layout, keep_on_top=self.core.keepOnTop,
+        self.window = sg.Window(title='Simple Clock', layout=layout, keep_on_top=self.keepOnTop,
                                 icon=get_icon_path(True))  # , icon=)
         self.normalFontColor = self.window[self.currentTimeKey].TextColor
         self.run_window_loop()
@@ -59,7 +61,7 @@ class Ui:
         self.window.BringToFront()
 
     def bringToFrontReset(self) -> None:
-        if not self.core.keepOnTop:
+        if not self.keepOnTop:
             self.window.KeepOnTop = False
             # self.window.TKroot.wm_attributes("-topmost", 0)
 
@@ -88,7 +90,7 @@ class Ui:
                 self.window.close()
                 break
             elif event in ["Start", "Stop", "Reset"]:
-                self.core.changeEvents(event)
+                self.core.change_events_by_str(event)
                 if event == "Reset":
                     self.window[self.msgKey].Update('')
                     self.bringToFrontReset()
@@ -167,7 +169,7 @@ class MainTray:
                 self.tray.close()
                 break
             elif event in ["Start", "Stop", "Reset"]:
-                self.core.changeEvents(event)
+                self.core.change_events_by_str(event)
                 self._updateTrayAll()
             elif event == sg.EVENT_TIMEOUT:
                 pass

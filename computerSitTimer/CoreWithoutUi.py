@@ -7,11 +7,9 @@ from computerSitTimer.CountDowner import CountDowner
 
 class TimerInterface:
     """
-    An Ui-independent interface for the timer with all functionality.
+    A Ui-independent/free interface for the timer with all functionality.
     Then ui will just be representation of this core
     """
-    start_minimised: bool
-    keepOnTop: bool
     _noti_state: 'TimerInterface._NotifyState'
     _timer: CountDowner
 
@@ -23,37 +21,28 @@ class TimerInterface:
         to_noti = 1
         has_noti_ed = 2
 
-    def __init__(self, timer_time: timedelta):
+    def __init__(self, timer_time: timedelta, direct_start=True):
         self._timer = CountDowner(timer_time)
         self._noti_state = self._NotifyState.no_noti
         # Ui Setting
-        self.keepOnTop = True
-        self.start_minimised = True
-        self.direct_start = True
-
-        # direct start
+        self.direct_start = direct_start
         if self.direct_start:
             self.start()
 
-    def getSetting(self, key: str) -> Any:
-        settings = self.getSettings()
-        assert(key in settings), f"Invalid key ({key}) for setting!"
-        return settings[key]
-
-    def getSettings(self):
-        return {
-            "timer_time": self._timer.duration,  # no point of resuming exact state of timer, so only duration
-            "keepOnTop": self.keepOnTop
-        }
+    def get_full_duration(self):
+        return self._timer.duration
 
     def start(self) -> None:
-        self.changeEvents("Start")
+        self._timer.start()
 
     def stop(self) -> None:
-        self.changeEvents("Stop")
+        self._timer.stop()
 
     def reset(self) -> None:
-        self.changeEvents("Reset")
+        self.reset()
+        self._noti_state = self._NotifyState.no_noti
+        if self.direct_start:
+            self.start()
 
     def set(self, duration: timedelta) -> None:
         self._timer.set(duration)
@@ -63,14 +52,11 @@ class TimerInterface:
     def changeEvents(self, eventStr: str) -> None:
         assert (eventStr in ["Start", "Stop", "Reset"])
         if eventStr == 'Start':
-            self._timer.start()
+            self.start()
         elif eventStr == 'Stop':
-            self._timer.stop()
+            self.stop()
         elif eventStr == 'Reset':
-            self._timer.reset()
-            self._noti_state = self._NotifyState.no_noti
-            if self.direct_start:
-                self.start()
+            self.reset()
 
     def updateTime(self) -> (bool, str, float):
         """
