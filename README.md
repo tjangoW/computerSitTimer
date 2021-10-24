@@ -5,10 +5,13 @@ It is similar to pomodoro technique,
 but started from different motivation:
 to not sit extensively in front of computer for better health.
 
+![](./misc/screenshot.png)
+
 Several reasons why I re-invented the wheel instead of using existing (browser) apps:
-light-weight, blocking/really obtrusive, not browser extension/app 
-(as we all spend far too long on browsers), 
-runs in the notification tray (background) and not have a console/terminal there.
+- light-weight (relatively)
+- blocking/really obtrusive
+- not browser extension/app (as we all spend far too long on browsers)
+- runs in the notification tray (background) and not have a console/terminal there.
 
 Also, a hobby project for myself to try out developing desktop application with Python.
 Because I am lazy, I am now trying to use [`pySimpleGUI`]
