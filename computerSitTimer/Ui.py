@@ -1,14 +1,14 @@
 import logging as log
+from datetime import timedelta, timedelta as delta
+from typing import Dict, List, Optional, Union
+
 # from threading import Thread
 # noinspection PyPep8Naming
 import PySimpleGUIQt as sg
-from typing import Optional, List, Dict, Union
-
 from PySimpleGUIQt import SystemTray
-from datetime import timedelta as delta, timedelta
 
 from computerSitTimer.CoreWithoutUi import CoreBI
-from computerSitTimer.media.MediaHelper import get_abs_path
+from computerSitTimer.media.MediaHelper import get_icon_path
 
 log.warning(sg.version)
 log.warning(sg.sys.version)
@@ -49,7 +49,7 @@ class Ui:
                    sg.Button('Reset', button_color=('white', '#FF8800'))],
                   [sg.Quit()]]
         self.window = sg.Window(title='Simple Clock', layout=layout, keep_on_top=self.core.keepOnTop,
-                                icon=get_abs_path("icon-play.png"))  # , icon=)
+                                icon=get_icon_path(True))  # , icon=)
         self.normalFontColor = self.window[self.currentTimeKey].TextColor
         self.run_window_loop()
 
@@ -211,7 +211,7 @@ class MainTray:
         elif update_time:
             update_kwargs.update(tooltip=self.core.updateTime()[1])
         if update_icon:
-            update_kwargs.update(filename=get_abs_path(f"icon-{'play' if self.core.is_running() else 'stop'}.png"))
+            update_kwargs.update(filename=get_icon_path(self.core.is_running()))
         if update_menu:
             update_kwargs.update(menu=self.createMenuList())
         return update_kwargs

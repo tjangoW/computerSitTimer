@@ -6,7 +6,7 @@ from typing import Optional, Dict, Union
 
 class CountDowner:
     duration: timedelta
-    status: 'CountDowner._Status'
+    _status: 'CountDowner._Status'
     _remaining_time: timedelta
     _previous_update_time: Optional[datetime]
 
@@ -24,7 +24,7 @@ class CountDowner:
                  is_running: bool = False):
         self.duration = duration
         self._remaining_time = duration if remaining_time is None else remaining_time
-        self.status = self._Status.STOPPED
+        self._status = self._Status.STOPPED
         self._previous_update_time = None  # helper variable to update the counter
         if is_running:
             self.start()
@@ -43,13 +43,13 @@ class CountDowner:
         }
 
     def start(self) -> None:
-        if self.status == self._Status.RUNNING:
+        if self._status == self._Status.RUNNING:
             return
-        self.status = self._Status.RUNNING
+        self._status = self._Status.RUNNING
         self._previous_update_time = dt.now()
 
     def _update_time(self) -> None:
-        if self.status == self._Status.STOPPED:
+        if self._status == self._Status.STOPPED:
             return
         assert self._previous_update_time is not None
         time_passed = dt.now() - self._previous_update_time
@@ -57,10 +57,10 @@ class CountDowner:
         self._previous_update_time += time_passed
 
     def stop(self) -> None:
-        if self.status == self._Status.STOPPED:
+        if self._status == self._Status.STOPPED:
             return
         self._update_time()
-        self.status = self._Status.STOPPED
+        self._status = self._Status.STOPPED
         self._previous_update_time = None
 
     def set(self, duration: delta) -> None:
@@ -89,7 +89,7 @@ class CountDowner:
         return self.fmtDelta(tmp), tmp.total_seconds()
 
     def is_running(self) -> bool:
-        return self.status == self._Status.RUNNING
+        return self._status == self._Status.RUNNING
 
     def is_stopped(self) -> bool:
-        return self.status == self._Status.STOPPED
+        return self._status == self._Status.STOPPED
