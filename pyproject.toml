@@ -29,3 +29,5 @@ exclude_lines = [
 [tool.coverage.html]
 directory = ".coverage_html"
 
+[tool.coverage.xml]
+directory = "coverage.xml"

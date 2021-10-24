@@ -40,5 +40,5 @@ pip install computerSitTimer
 [PyPI]: https://pypi.org/project/computerSitTimer/
 [`pySimpleGUI`]: https://pysimplegui.readthedocs.io/
 [pypi-badge]: https://badge.fury.io/py/computerSitTimer.svg
-[gh-action-test]: https://github.com/tjangoW/computerSitTimer/actions/workflows/python-test.yml/badge.svg
+[gh-action-test]: https://github.com/tjangoW/computerSitTimer/actions/workflows/ci-matrix-testsuite.yml/badge.svg
 [python-versions]: https://shields.io/pypi/pyversions/computersittimer.svg?logo=python&logoColor=FBE072
