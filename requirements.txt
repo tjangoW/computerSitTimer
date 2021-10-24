@@ -1,6 +1,15 @@
+################
+# dependencies
+################
 # pyqt5
 # PySimpleGUI
 # PySide2
 PySimpleGUIQt
+
+################
+# developer
+################
 wheel
 pytest
+coverage[toml]
+flake8
