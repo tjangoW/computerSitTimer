@@ -3,3 +3,4 @@
 # PySide2
 PySimpleGUIQt
 wheel
+pytest

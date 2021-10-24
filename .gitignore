@@ -1,9 +1,14 @@
 .idea
-PySimpleGUI
 
 #python
 __pycache__
 venv*
+
+# build
 build
 dist
 *.egg-info
+
+# coverage
+.coverage
+htmlcov
