@@ -134,15 +134,14 @@ class MainTray:
     tray: Optional[SystemTray]
     _state: Dict[str, bool]
 
-    def __init__(self, timer_time: timedelta, sound_on: bool = False, sound_file: Optional[str] = None):
-        self.core = CoreBI(timer_time=timer_time, sound_on=sound_on, sound_file=sound_file)
+    def __init__(self, timer_time: timedelta):
+        self.core = CoreBI(timer_time=timer_time)
         self.tray: Optional[sg.SystemTray] = None
         self._state = self._getTrayState()
 
     def createMenuList(self) -> List[List[str]]:
         """ A specific function so that sound option can be set accordingly"""
         menu_def = ['UNUSED', ['Start', 'Stop', 'Reset', "---",
-                               f"Sound: {'ON' if self.core.noti_player.is_sound_on else 'OFF'}", "---",
                                "Show UI", "---",
                                'Exit']]
         return menu_def
@@ -172,9 +171,6 @@ class MainTray:
                 self._updateTrayAll()
             elif event == sg.EVENT_TIMEOUT:
                 pass
-            elif event.startswith("Sound: "):
-                self.core.noti_player.toggle_sound()
-                self._checkState()
             elif event in ("Show UI", sg.EVENT_SYSTEM_TRAY_ICON_DOUBLE_CLICKED):
                 self.showUi()
             else:
@@ -218,7 +214,7 @@ class MainTray:
 
     def _getTrayState(self):
         """ without time """
-        return {"timer": self.core.is_running(), "sound": self.core.noti_player.is_sound_on}
+        return {"timer": self.core.is_running()}
 
     def _checkState(self, override_only=False):
         """ When override_only, just update the state.
@@ -250,10 +246,10 @@ if __name__ == '__main__':
     # t.start()
     m.run()
 
-if False:
-    sg.preview_all_look_and_feel_themes()
+    if False:
+        sg.preview_all_look_and_feel_themes()
 
-    import queue
+        import queue
 
-    queue_gui = queue.Queue()
-    queue_gui.get_nowait()
+        queue_gui = queue.Queue()
+        queue_gui.get_nowait()

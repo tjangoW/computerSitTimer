@@ -1,6 +1,6 @@
+from datetime import timedelta, timedelta as delta
 from enum import Enum
 from typing import Any
-from datetime import timedelta as delta, timedelta
 
 from computerSitTimer.CountDowner import CountDowner
 
