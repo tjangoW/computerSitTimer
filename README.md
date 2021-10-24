@@ -1,4 +1,9 @@
 # Computer Sit Timer
+![][python-versions]
+![][pypi-badge]
+![][gh-action-test]
+
+
 This is a simple countdown timer that pops up 
 and stays on top to block the view until action is taken.
 It is similar to pomodoro technique,
@@ -26,7 +31,7 @@ pip install computerSitTimer
 
 
 ## Resources:
- - [official Cookbook for pySimpleGUI](https://pysimplegui.readthedocs.io/en/latest/cookbook/).
+ - [Official Cookbook for pySimpleGUI](https://pysimplegui.readthedocs.io/en/latest/cookbook/).
  - [trinket tutorials](https://pysimplegui.trinket.io/demo-programs#/demo-programs/multi-threaded-work)
    has quite something there (examples).
    It is basically like a VM and can run code and windows there.
@@ -34,3 +39,6 @@ pip install computerSitTimer
 <!-- Links -->
 [PyPI]: https://pypi.org/project/computerSitTimer/
 [`pySimpleGUI`]: https://pysimplegui.readthedocs.io/
+[pypi-badge]: https://badge.fury.io/py/computerSitTimer.svg
+[gh-action-test]: https://github.com/tjangoW/computerSitTimer/actions/workflows/python-test.yml/badge.svg
+[python-versions]: https://shields.io/pypi/pyversions/computersittimer.svg?logo=python&logoColor=FBE072
