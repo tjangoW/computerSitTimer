@@ -1,8 +1,7 @@
 from enum import Enum
-from typing import Optional, Any
+from typing import Any
 from datetime import timedelta as delta, timedelta
 
-from computerSitTimer.AudioPlayer import AudioPlayer
 from computerSitTimer.CountDowner import CountDowner
 
 
@@ -13,7 +12,6 @@ class CoreBI:
     """
     start_minimised: bool
     keepOnTop: bool
-    noti_player: AudioPlayer
     _noti_state: 'CoreBI._NotifyState'
     _timer: CountDowner
 
@@ -25,9 +23,8 @@ class CoreBI:
         to_noti = 1
         has_noti_ed = 2
 
-    def __init__(self, timer_time: timedelta, sound_on: bool = False, sound_file: Optional[str] = None):
+    def __init__(self, timer_time: timedelta):
         self._timer = CountDowner(timer_time)
-        self.noti_player = AudioPlayer(sound_file, sound_on)
         self._noti_state = self._NotifyState.no_noti
         # Ui Setting
         self.keepOnTop = True
@@ -46,8 +43,6 @@ class CoreBI:
     def getSettings(self):
         return {
             "timer_time": self._timer.duration,  # no point of resuming exact state of timer, so only duration
-            "sound_on": self.noti_player.is_sound_on,
-            "sound_file": self.noti_player.wav_filename,
             "keepOnTop": self.keepOnTop
         }
 
@@ -71,9 +66,7 @@ class CoreBI:
             self._timer.start()
         elif eventStr == 'Stop':
             self._timer.stop()
-            self.noti_player.stop()
         elif eventStr == 'Reset':
-            self.noti_player.stop()
             self._timer.reset()
             self._noti_state = self._NotifyState.no_noti
             if self.direct_start:
@@ -89,7 +82,6 @@ class CoreBI:
         to_notify = (seconds_left < 0) and (self._noti_state == self._NotifyState.no_noti)
         if to_notify:
             self._noti_state = self._NotifyState.to_noti
-            self.noti_player.play()
 
         return to_notify, time_str, seconds_left
 

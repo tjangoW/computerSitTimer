@@ -1,8 +1,5 @@
 # pyqt5
 # PySimpleGUI
 # PySide2
-simpleaudio
 PySimpleGUIQt
-typing
-pydub
 wheel
