@@ -1,6 +1,7 @@
 # Todos/Issue trackers
 
 - Advanced features (wishes):
+    - [ ] 🚩 converting to enable timed script execution (either this is the base and the other extends from this, or total conversion)
     - Visual
         - [x] icon
         - [ ] tray icon & main icon that changes over time
@@ -14,5 +15,5 @@
 - Bug-ish
     - [ ] (medium) as Ui is blocking call, any action on the tray will queue up and executed after UI is closed
     - [ ] (performance, enhancement) `ShowUI` call is a bit slow, takes about 8 seconds for the ui to pop-up when time's up
-    - [ ] (performance, minor) right-click on tray hangs the loop, as in time is not updated during that time.
-          Not really that much of an issue for me because I won't right click all the time and accurate time is not needed.
+    - [ ] (performance, minor) right-click on tray pauses the loop, as in time is not updated during that time.
+          Not really that much of an issue for me because I won't right-click all the time and accurate time is not needed.
