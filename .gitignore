@@ -9,6 +9,7 @@ build
 dist
 *.egg-info
 
-# coverage
+# test, coverage
+.pytest_cache
 .coverage
-htmlcov
+.coverage_html
