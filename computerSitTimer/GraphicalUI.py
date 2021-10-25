@@ -240,4 +240,4 @@ class MainTray:
 
 if __name__ == '__main__':
     MainTray(timedelta(seconds=4)).run()
-# sg.preview_all_look_and_feel_themes()
+    # sg.preview_all_look_and_feel_themes()

@@ -31,7 +31,7 @@ pip install computerSitTimer
 ```
 
 ## Known Issues
-- no PySide2 for Python3.10 in Windows and Mac
+- no PySide2 for Python3.10 in Windows and Mac (as of v0.1.3)
 
 
 ## Resources:

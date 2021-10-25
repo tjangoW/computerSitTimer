@@ -18,7 +18,14 @@ Things to Check
 - readme?
 -->
 
-## [Unreleased]
+## [0.1.3] - 2021-10-25
+Tidying things up before moving to timed-execution.
+### Added
+- simple tests with gh actions
+### Changed
+- quite some refactoring (renaming), trimmed off useless classes and features
+### Removed
+- audio module completely
 
 ## [0.1.2] - 2021-01-17
 ### Added
@@ -36,6 +43,7 @@ Things to Check
 - everything! (initial commit)
 
 [Unreleased]: https://github.com/tjangoW/computerSitTimer/compare/v0.1.2...HEAD
+[0.1.3]: https://github.com/tjangoW/computerSitTimer/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/tjangoW/computerSitTimer/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/tjangoW/computerSitTimer/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/tjangoW/computerSitTimer/releases/tag/v0.1.0
