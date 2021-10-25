@@ -8,6 +8,7 @@ omit = [
     "**/__init__.py",
     "**/__main__.py",
     "**/Tests/*",
+    "**/tmp*",
 ]
 
 [tool.coverage.report]
