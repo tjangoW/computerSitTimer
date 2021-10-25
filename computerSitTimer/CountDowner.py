@@ -29,11 +29,13 @@ class CountDowner:
                  remaining_time: Optional[delta] = None):
         assert duration.total_seconds() > 0
         self.duration = duration
-        self._remaining_time = duration if remaining_time is None else remaining_time
-        assert self._remaining_time.total_seconds() > 0, f"remaining_time={remaining_time!r} should be positive."
+        self._remaining_time = duration if remaining_time is None else \
+            remaining_time
+        assert self._remaining_time.total_seconds() > 0, \
+            f"remaining_time={remaining_time!r} should be positive."
 
         self._run_status = _Status.STOPPED
-        self._previous_update_time = None  # helper variable to update the counter
+        self._previous_update_time = None  # helper to update the counter
 
         self._has_noti = False
         self._direct_start = direct_start

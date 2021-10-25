@@ -16,8 +16,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/tjangoW/computerSitTimer",
     install_requires=[
-        "pySimpleGUIQt",
-        "simpleaudio"
+        "pySimpleGUIQt"
     ],
     project_urls={
     },

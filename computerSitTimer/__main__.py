@@ -2,7 +2,7 @@ import logging as log
 import sys
 from datetime import timedelta
 
-from computerSitTimer.Ui import MainTray
+from computerSitTimer.GraphicalUI import MainTray
 
 
 def main(args=None):

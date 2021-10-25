@@ -1,7 +1,7 @@
 import logging
 from datetime import timedelta
 
-from computerSitTimer.Ui import MainTray
+from computerSitTimer.GraphicalUI import MainTray
 from tests.TestHelper import run_ability_check_of_not_ending_function
 
 
