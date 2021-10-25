@@ -1,17 +1,15 @@
-import logging as log
+import logging
 from datetime import timedelta, timedelta as delta
 from typing import Dict, List, Optional, Union
 
-# from threading import Thread
-# noinspection PyPep8Naming
 import PySimpleGUIQt as sg
+from computerSitTimer.CountDowner import CountDowner
 from PySimpleGUIQt import SystemTray
 
-from computerSitTimer.CoreWithoutUi import TimerInterface
 from computerSitTimer.media.MediaHelper import get_icon_path
 
-log.warning(sg.version)
-log.warning(sg.sys.version)
+logging.warning(sg.version)
+logging.warning(sg.sys.version)
 
 sg.theme('DarkTanBlue')  # Add a touch of color
 
@@ -25,7 +23,7 @@ class Const:
 
 
 class Ui:
-    core: TimerInterface
+    timer: CountDowner
 
     currentTimeKey = '_time_'
     msgKey = '_msg_'
@@ -34,7 +32,7 @@ class Ui:
     durationKey = "_duration_"
     durationFormat = "mm, mm:ss or hh:mm:ss"
 
-    def __init__(self, core: TimerInterface):
+    def __init__(self, core: CountDowner):
         self.core = core
         self.keepOnTop = True
         self.start_minimised = True
@@ -42,7 +40,7 @@ class Ui:
         layout = [[sg.Text('', key=self.msgKey, size=(20, 1), auto_size_text=True, font=(self.font, 20),
                            justification='center')],
                   [sg.Text('Current time: '), sg.Text('', key=self.currentTimeKey, size=(20, 1))],
-                  [sg.Text('Full time: '), sg.Input(self.core.get_full_duration(), key=self.durationKey,
+                  [sg.Text('Full time: '), sg.Input(self.core.duration, key=self.durationKey,
                                                     tooltip=f"in the format {self.durationFormat}",
                                                     enable_events=True),
                    sg.Button('Set', button_color=('white', '#FF8800'), bind_return_key=True)],
@@ -66,13 +64,13 @@ class Ui:
             # self.window.TKroot.wm_attributes("-topmost", 0)
 
     def updateTime(self):
-        to_notify, time_str, seconds_left = self.core.updateTime()
-        log.debug(f"-- UI update: {time_str}")
+        to_notify, time_str, seconds_left = self.core.get_updated_state_and_time()
+        logging.debug(f"-- UI update: {time_str}")
         self.window[self.currentTimeKey].Update(time_str, text_color=(self.normalFontColor if seconds_left >= 0 else
                                                                       self.negativeFontColor))
         if to_notify:
             self.bringToFront()
-            self.core.offToNotifyState()
+            self.core.done_and_turn_off_noti()
             # sg.popup_non_blocking(f"Time's up! {self.cd_obj.fmtDelta(self.cd_obj.duration)}")
         if seconds_left < 0 and len(self.window[self.msgKey].DisplayText) == 0:
             self.window[self.msgKey].Update("Time's up!")
@@ -84,13 +82,13 @@ class Ui:
 
             # Exits program cleanly if user clicks "X" or "Quit" buttons
             if event in (sg.WIN_CLOSED, 'Quit'):
-                seconds_left = self.core.updateTime()[2]
+                seconds_left = self.core.get_updated_state_and_time()[2]
                 if seconds_left < 0:
                     self.core.reset()
                 self.window.close()
                 break
             elif event in ["Start", "Stop", "Reset"]:
-                self.core.change_events_by_str(event)
+                self.core.call_event_by_str(event)
                 if event == "Reset":
                     self.window[self.msgKey].Update('')
                     self.bringToFrontReset()
@@ -132,12 +130,12 @@ class MainTray:
     So now tray will be the master, and when time is up, it will make a (blocking) call to show the UI.
     Tray will run at all time while Ui is not required.
     """
-    core: TimerInterface
+    timer: CountDowner
     tray: Optional[SystemTray]
     _state: Dict[str, bool]
 
     def __init__(self, timer_time: timedelta):
-        self.core = TimerInterface(timer_time=timer_time)
+        self.timer = CountDowner(duration=timer_time)
         self.tray: Optional[sg.SystemTray] = None
         self._state = self._getTrayState()
 
@@ -156,7 +154,7 @@ class MainTray:
         """blocking call to show Ui"""
         # t = Thread(target=Ui, args=(self.core, ))
         # t.start()
-        Ui(self.core)
+        Ui(self.timer)
 
     def run(self):
         self.createTray()
@@ -169,23 +167,23 @@ class MainTray:
                 self.tray.close()
                 break
             elif event in ["Start", "Stop", "Reset"]:
-                self.core.change_events_by_str(event)
+                self.timer.call_event_by_str(event)
                 self._updateTrayAll()
             elif event == sg.EVENT_TIMEOUT:
                 pass
             elif event in ("Show UI", sg.EVENT_SYSTEM_TRAY_ICON_DOUBLE_CLICKED):
                 self.showUi()
             else:
-                log.debug(event.__repr__())
+                logging.debug(event.__repr__())
             self._checkState()
             if self._toNotify():
-                log.debug("tray calling UI as time's up")
+                logging.debug("tray calling UI as time's up")
                 self.showUi()
 
     def _toNotify(self) -> bool:
-        to_notify, time_str, seconds_left = self.core.updateTime()
+        to_notify, time_str, seconds_left = self.timer.get_updated_state_and_time()
         self._updateTray(time_str)
-        log.debug(f"-- tray update: {time_str}")
+        logging.debug(f"-- tray update: {time_str}")
         if to_notify:
             self.tray.ShowMessage("Time is up!", "Move your ass away from the chair please!")
         return to_notify
@@ -207,16 +205,16 @@ class MainTray:
         if time_str is not None:
             update_kwargs.update(tooltip=time_str)
         elif update_time:
-            update_kwargs.update(tooltip=self.core.updateTime()[1])
+            update_kwargs.update(tooltip=self.timer.get_updated_state_and_time()[1])
         if update_icon:
-            update_kwargs.update(filename=get_icon_path(self.core.is_running()))
+            update_kwargs.update(filename=get_icon_path(self.timer.is_running()))
         if update_menu:
             update_kwargs.update(menu=self.createMenuList())
         return update_kwargs
 
     def _getTrayState(self):
         """ without time """
-        return {"timer": self.core.is_running()}
+        return {"timer": self.timer.is_running()}
 
     def _checkState(self, override_only=False):
         """ When override_only, just update the state.
@@ -231,27 +229,11 @@ class MainTray:
         update_kwargs = {}
         if old_state["timer"] != self._state["timer"]:
             update_kwargs.update(update_icon=True)
-        if old_state["sound"] != self._state["sound"]:
-            update_kwargs.update(update_menu=True)
         if update_kwargs:
             self._updateTray(**update_kwargs)
 
 
 if __name__ == '__main__':
-    # well, I run this for debug, so 5 seconds
-    # actual use is through __main__.py
-    log.basicConfig(format='%(levelname)s:%(message)s', level=log.DEBUG)
-    m = MainTray(delta(seconds=5))
-
-    # c = m.core
-    # t = Thread(target=Ui, args=(m.core,))
-    # t.start()
-    m.run()
-
     if False:
         sg.preview_all_look_and_feel_themes()
 
-        import queue
-
-        queue_gui = queue.Queue()
-        queue_gui.get_nowait()
