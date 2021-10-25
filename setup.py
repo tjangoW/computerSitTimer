@@ -20,7 +20,7 @@ setuptools.setup(
     ],
     project_urls={
     },
-    packages=setuptools.find_packages(),
+    packages=setuptools.find_packages(exclude=["tmp*"]),
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
