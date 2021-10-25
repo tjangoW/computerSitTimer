@@ -30,6 +30,9 @@ As this package is uploaded to [PyPI], the easiest way to install is via pip:
 pip install computerSitTimer
 ```
 
+## Known Issues
+- no PySide2 for Python3.10 in Windows and Mac
+
 
 ## Resources:
  - [Official Cookbook for pySimpleGUI](https://pysimplegui.readthedocs.io/en/latest/cookbook/).

@@ -14,7 +14,7 @@ env:
 
 jobs:
   tests:
-    name: "Python ${{ matrix.python-version }} on ${{ matrix.os }}"
+  name: "Python ${{ matrix.python-version }} on ${{ matrix.os }}"
     runs-on: "${{ matrix.os }}"
     strategy:
       matrix:
@@ -28,6 +28,12 @@ jobs:
           - "3.8"
           - "3.9"
           - "3.10"
+        exclude:
+          # Windows does not have PySide for py3.10
+          - os:
+            windows-latest
+            macos-latest
+            python-version: "3.10"
       fail-fast: false
 
     steps:
