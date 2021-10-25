@@ -14,8 +14,6 @@ def test_start_stop_set():
     c = CountDowner(timedelta(seconds=ori_sec), direct_start=False)
     assert not c.is_running()
     assert not c._has_noti
-    c2 = CountDowner(timedelta(seconds=ori_sec), direct_start=True)
-    assert c2.is_running()
 
     c.stop()
     assert not c.is_running()
@@ -57,3 +55,14 @@ def test_start_stop_set():
 
     c.set(timedelta(minutes=5))
     assert c.get_updated_state_and_time()[2] == 5*60
+
+
+def test_direct_start():
+    c2 = CountDowner(timedelta(seconds=5), direct_start=True)
+    assert c2.is_running()
+
+    c2.stop()
+    assert not c2.is_running()
+
+    c2.reset()
+    assert c2.is_running()

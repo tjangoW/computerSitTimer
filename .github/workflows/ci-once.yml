@@ -73,6 +73,7 @@ jobs:
         run: |
           coverage run -m pytest
           coverage xml
+          coverage report
 
       - name: codecov actions
         uses: codecov/codecov-action@v2

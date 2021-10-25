@@ -1,6 +1,6 @@
 import logging
 from datetime import timedelta, timedelta as delta
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional, Tuple, Union
 
 import PySimpleGUIQt as sg
 from computerSitTimer.CountDowner import CountDowner
@@ -18,11 +18,12 @@ class Const:
     """
     A namespace instead of a class to have all constants
     """
-    timeout_ui = 333  # in milliseconds
-    timeout_bg = 1000  # in milliseconds
+    timeout_popup = 333  # in milliseconds
+    timeout_tray = 1000  # in milliseconds
+    timeout_core = 1000  # in milliseconds
 
 
-class Ui:
+class PopUp:
     timer: CountDowner
 
     currentTimeKey = '_time_'
@@ -78,7 +79,7 @@ class Ui:
     def run_window_loop(self) -> None:
         # Event loop
         while True:
-            event, values = self.window.Read(timeout=Const.timeout_ui)
+            event, values = self.window.Read(timeout=Const.timeout_popup)
 
             # Exits program cleanly if user clicks "X" or "Quit" buttons
             if event in (sg.WIN_CLOSED, 'Quit'):
@@ -134,8 +135,8 @@ class MainTray:
     tray: Optional[SystemTray]
     _state: Dict[str, bool]
 
-    def __init__(self, timer_time: timedelta):
-        self.timer = CountDowner(duration=timer_time)
+    def __init__(self, timer: CountDowner):
+        self.timer = timer
         self.tray: Optional[sg.SystemTray] = None
         self._state = self._getTrayState()
 
@@ -154,13 +155,13 @@ class MainTray:
         """blocking call to show Ui"""
         # t = Thread(target=Ui, args=(self.core, ))
         # t.start()
-        Ui(self.timer)
+        PopUp(self.timer)
 
     def run(self):
         self.createTray()
         """running the main loop"""
         while True:
-            event = self.tray.Read(timeout=Const.timeout_bg)
+            event = self.tray.Read(timeout=Const.timeout_tray)
 
             # Exits program cleanly if user clicks "X" or "Quit" buttons
             if event == 'Exit':
@@ -233,7 +234,22 @@ class MainTray:
             self._updateTray(**update_kwargs)
 
 
+class UiCoreInterface:
+    """
+    Simple center processor of user input.
+
+    """
+    ui_s: Dict[str, Union[MainTray, Optional[PopUp]]]
+    timer: CountDowner
+
+    def __init__(self, timer_time: timedelta):
+        self.timer = CountDowner(duration=timer_time)
+        self.ui_s = {"tray": MainTray(self.timer), "popup": None}
+
+    def run(self):
+        self.ui_s["tray"].run()
+
+
 if __name__ == '__main__':
     if False:
         sg.preview_all_look_and_feel_themes()
-

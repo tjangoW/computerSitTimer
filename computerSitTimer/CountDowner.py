@@ -101,6 +101,8 @@ class CountDowner:
             self.duration = duration
         self._remaining_time = self.duration
         self._has_noti = False
+        if self._direct_start:
+            self.start()
 
     def call_event_by_str(self, event_str: str):
         assert event_str in ["Start", "Stop", "Reset"]
