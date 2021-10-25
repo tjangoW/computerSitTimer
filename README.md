@@ -1,6 +1,6 @@
 # Computer Sit Timer
-[![][img-python-versions]](PyPI)
-[![][img-pypi-badge]](PyPI)\
+[![][img-python-versions]][PyPI]
+[![][img-pypi-badge]][PyPI]\
 [![][img-gh-action-test]](https://github.com/tjangoW/computerSitTimer/actions/workflows/ci-matrix-testsuite.yml)
 [![codecov](https://codecov.io/gh/tjangoW/computerSitTimer/branch/master/graph/badge.svg?token=1DPRMOCYQZ)](https://codecov.io/gh/tjangoW/computerSitTimer)
 
