@@ -44,7 +44,7 @@ def run_ability_check_of_not_ending_function(target, args, timeout):
         print("=" * 30 + "\n")
         print("=" * 30 + "\n")
         raise exception[0]("See traceback print above.")
-    p.kill()
+    # p.kill()  # no kill in 3.6
     p.terminate()
     p.join()
     print(datetime.datetime.now())

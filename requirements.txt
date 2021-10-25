@@ -3,8 +3,8 @@
 ################
 # pyqt5
 # PySimpleGUI
-# PySide2
 PySimpleGUIQt
+PySide2  # apparently this is not auto installed in windows py3.10
 
 ################
 # developer
