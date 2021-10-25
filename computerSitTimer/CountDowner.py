@@ -1,7 +1,6 @@
-from datetime import timedelta as delta, timedelta
-from datetime import datetime as dt, datetime
+from datetime import datetime, datetime as dt, timedelta, timedelta as delta
 from enum import Enum
-from typing import Optional, Dict, Union
+from typing import Optional
 
 
 class _Status(Enum):
@@ -50,6 +49,7 @@ class CountDowner:
                f"is_running={self.is_running()}, " \
                f"_has_noti={self._has_noti})"
 
+    # not really useful to be honest
     # def get_setting(self) -> Dict[str, Union[delta, bool]]:
     #     """ only export sensible values """
     #     return {

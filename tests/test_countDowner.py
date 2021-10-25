@@ -57,18 +57,3 @@ def test_start_stop_set():
 
     c.set(timedelta(minutes=5))
     assert c.get_updated_state_and_time()[2] == 5*60
-
-
-def test_create_from_settings():
-    c = CountDowner(timedelta(seconds=2))
-    c.start()
-    sleep(3)
-    c.stop()
-    settings = c.get_setting()
-
-    c2 = CountDowner(**settings)
-    assert c.duration == c2.duration
-    assert c.remaining_time == c2.remaining_time
-    assert c.is_running() == c2.is_running()
-
-    print(c2)
