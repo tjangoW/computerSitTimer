@@ -74,14 +74,13 @@ class PopUp:
         self.normalFontColor = self.window[self.currentTimeKey].TextColor
 
     def _update_time(self):
-        to_notify, time_str, seconds_left = self.timer.get_updated_state_and_time()
+        to_notify, time_str, seconds_left = self.timer.get_updates()
         logging.debug(f"-- UI update: {time_str}")
         self.window[self.currentTimeKey].Update(time_str, text_color=(
             self.normalFontColor if seconds_left >= 0 else
             self.negativeFontColor))
         if to_notify:
             self.timer.done_and_turn_off_noti()
-            # sg.popup_non_blocking(f"Time's up! {self.cd_obj.fmtDelta(self.cd_obj.duration)}")
         if seconds_left < 0 and len(self.window[self.msgKey].DisplayText) == 0:
             self.window[self.msgKey].Update("Time's up!")
 
@@ -93,7 +92,7 @@ class PopUp:
 
             # Exits program cleanly if user clicks "X" or Event.ClosePopup buttons
             if event in (sg.WIN_CLOSED, Event.CLOSE_POPUP):
-                seconds_left = self.timer.get_updated_state_and_time()[2]
+                seconds_left = self.timer.get_updates()[2]
                 if seconds_left < 0:
                     self.timer.reset()
                 self.window.close()
@@ -103,38 +102,35 @@ class PopUp:
                 if event == Event.RESET:
                     self.window[self.msgKey].Update('')
             elif event in [Event.SET]:
-                edit = self.window[self.durationKey]
-                duration: List[Union[str, int]] = edit.Get().split(":")
-
-                hasError: bool = False
-                for _i in range(1):  # a fake loop to have breaking mechanism
-                    if len(duration) not in [1, 2, 3]:
-                        hasError = True
-                        break
-                    if len(duration) == 2:
-                        duration.insert(0, "0")
-                    elif len(duration) == 1:
-                        duration = ["0", duration[0], "0"]
-                    try:
-                        duration = [int(i) for i in duration]
-                    except ValueError:
-                        hasError = True
-                        break
-
-                if hasError:
-                    sg.Popup(
-                        f"Invalid duration format! It must be in the form of {self.durationFormat}.",
-                        keep_on_top=True)
-                else:
-                    self.timer.set(
-                        timedelta(hours=duration[0], minutes=duration[1],
-                                  seconds=duration[2]))
-
-            elif event in (sg.EVENT_TIMEOUT, ):
+                self._parse_input_time_n_set()
+            elif event in [sg.EVENT_TIMEOUT]:
                 pass
             else:
                 pass
             self._update_time()
+
+    def _show_invalid_format_popup(self):
+        sg.Popup(f"Invalid duration format! It must be in the form of"
+                 f" {self.durationFormat}.", keep_on_top=True)
+
+    def _parse_input_time_n_set(self) -> None:
+        edit = self.window[self.durationKey]
+        duration_str: List[str] = edit.Get().split(":")
+
+        if len(duration_str) not in [1, 2, 3]:
+            self._show_invalid_format_popup()
+            return
+
+        if len(duration_str) == 2:
+            duration_str.insert(0, "0")
+        elif len(duration_str) == 1:
+            duration_str = ["0", duration_str[0], "0"]
+        try:
+            duration = [int(i) for i in duration_str]
+            self.timer.set(timedelta(hours=duration[0], minutes=duration[1],
+                                     seconds=duration[2]))
+        except ValueError:
+            self._show_invalid_format_popup()
 
 
 class MainTray:
@@ -142,7 +138,7 @@ class MainTray:
     The Main class, basically the tray object.
     So now tray will be the master, and when time is up, it will make a
     (blocking) call to show the UI.
-    Tray will run at all time while Ui is not required.
+    Tray will run at all time while PopUp is not required.
     """
     timer: CountDowner
     tray: Optional[SystemTray]
@@ -187,11 +183,11 @@ class MainTray:
                 self.timer.call_event_by_str(event)
                 self._update_tray_all()
                 continue
-            elif event in (
-                    sg.EVENT_TIMEOUT, sg.EVENT_SYSTEM_TRAY_ICON_ACTIVATED):
+            elif event in (sg.EVENT_TIMEOUT,
+                           sg.EVENT_SYSTEM_TRAY_ICON_ACTIVATED):
                 pass
-            elif event in (
-                    "Show UI", sg.EVENT_SYSTEM_TRAY_ICON_DOUBLE_CLICKED):
+            elif event in (Event.SHOW_POPUP,
+                           sg.EVENT_SYSTEM_TRAY_ICON_DOUBLE_CLICKED):
                 self._show_popup()
             else:
                 logging.debug(event.__repr__())
@@ -201,7 +197,7 @@ class MainTray:
 
     def _normal_time_update(self):
         self._additional_icon_check_and_update()
-        has_noti, time_str, _ = self.timer.get_updated_state_and_time()
+        has_noti, time_str, _ = self.timer.get_updates()
         self._update_tray(time_str)
         if has_noti:
             logging.debug(f"-- tray update: {time_str}")
@@ -220,7 +216,7 @@ class MainTray:
             update_kwargs.update(tooltip=time_str)
         elif update_time:
             update_kwargs.update(
-                tooltip=self.timer.get_updated_state_and_time()[1])
+                tooltip=self.timer.get_updates()[1])
         if update_icon:
             update_kwargs.update(
                 filename=get_icon_path(self.timer.is_running()))

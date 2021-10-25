@@ -121,7 +121,7 @@ class CountDowner:
         hh, mm = divmod(tm, 60)
         return f"{'-' if ts < 0 else ' '}{hh:02.0f}:{mm:02.0f}:{ss:02.0f}"
 
-    def get_updated_state_and_time(self, call_update=True) -> (bool, str, float):
+    def get_updates(self, call_update=True) -> (bool, str, float):
         """
         has_notification, time_str, seconds_left
         get formatted string and time in seconds

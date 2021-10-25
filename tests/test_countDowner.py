@@ -22,20 +22,20 @@ def test_start_stop_set():
     c.start()
     assert c.is_running()
     sleep(2)
-    assert c.get_updated_state_and_time()[2] <= 2
+    assert c.get_updates()[2] <= 2
     assert not c._time_is_up()
     assert not c._has_noti
 
     c.start()
     assert c.is_running()
     sleep(2)
-    assert c.get_updated_state_and_time()[2] < 0
+    assert c.get_updates()[2] < 0
     assert c._time_is_up()
     assert c._has_noti
 
     c.stop()
     assert not c.is_running()
-    assert c.get_updated_state_and_time()[2] < 0
+    assert c.get_updates()[2] < 0
     assert c._time_is_up()
     assert c._has_noti
 
@@ -43,18 +43,18 @@ def test_start_stop_set():
     assert c._time_is_up()
     assert not c._has_noti
 
-    v1 = c.get_updated_state_and_time()
+    v1 = c.get_updates()
     sleep(1)
-    v2 = c.get_updated_state_and_time()
+    v2 = c.get_updates()
     assert v1[0] == v2[0]
     assert v1[1] == v2[1]
     assert v1[2] == v2[2]
 
     c.reset()
-    assert c.get_updated_state_and_time()[2] == ori_sec
+    assert c.get_updates()[2] == ori_sec
 
     c.set(timedelta(minutes=5))
-    assert c.get_updated_state_and_time()[2] == 5*60
+    assert c.get_updates()[2] == 5 * 60
 
 
 def test_direct_start():
