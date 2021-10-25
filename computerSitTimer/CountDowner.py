@@ -122,7 +122,10 @@ class CountDowner:
         return f"{'-' if ts < 0 else ' '}{hh:02.0f}:{mm:02.0f}:{ss:02.0f}"
 
     def get_updated_state_and_time(self, call_update=True) -> (bool, str, float):
-        """get formatted string and time in seconds"""
+        """
+        has_notification, time_str, seconds_left
+        get formatted string and time in seconds
+        """
         tmp = self.remaining_time if call_update else self._remaining_time
         return self._has_noti, self.fmtDelta(tmp), tmp.total_seconds()
 

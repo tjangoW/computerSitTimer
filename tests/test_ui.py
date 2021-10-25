@@ -1,13 +1,13 @@
 import logging
 from datetime import timedelta
 
-from computerSitTimer.Ui import UiCoreInterface
+from computerSitTimer.Ui import MainTray
 from tests.TestHelper import run_ability_check_of_not_ending_function
 
 
 def test_tray_run():
     """just to make sure it can run """
     logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
-    m = UiCoreInterface(timedelta(seconds=2))
+    m = MainTray(timedelta(seconds=2))
     run_ability_check_of_not_ending_function(target=m.run, args=(), timeout=5)
     pass
