@@ -31,8 +31,8 @@ jobs:
         exclude:
           # Windows does not have PySide for py3.10
           - os:
-            windows-latest
-            macos-latest
+            - windows-latest
+            - macos-latest
             python-version: "3.10"
       fail-fast: false
 
