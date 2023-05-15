@@ -1,11 +1,13 @@
-from datetime import datetime, datetime as dt, timedelta, timedelta as delta
+from datetime import datetime
+from datetime import timedelta
 from enum import Enum
 from typing import Optional
 
 
 class _Status(Enum):
-    RUNNING = 1
-    STOPPED = 0
+    Running = 1
+    OverTime = -1
+    Stopped = 0
 
 
 class CountDowner:
@@ -19,14 +21,14 @@ class CountDowner:
     _run_status: _Status
 
     @property
-    def remaining_time(self) -> delta:
+    def remaining_time(self) -> timedelta:
         """auto updated"""
         self._update_time()
         return self._remaining_time
 
-    def __init__(self, duration: delta = delta(hours=1),
+    def __init__(self, duration: timedelta = timedelta(hours=1),
                  direct_start=True,
-                 remaining_time: Optional[delta] = None):
+                 remaining_time: Optional[timedelta] = None):
         assert duration.total_seconds() > 0
         self.duration = duration
         self._remaining_time = duration if remaining_time is None else \
@@ -34,7 +36,7 @@ class CountDowner:
         assert self._remaining_time.total_seconds() > 0, \
             f"remaining_time={remaining_time!r} should be positive."
 
-        self._run_status = _Status.STOPPED
+        self._run_status = _Status.Stopped
         self._previous_update_time = None  # helper to update the counter
 
         self._has_noti = False
@@ -62,10 +64,10 @@ class CountDowner:
     #     }
 
     def start(self) -> None:
-        if self._run_status == _Status.RUNNING:
+        if self._run_status == _Status.Running:
             return
-        self._run_status = _Status.RUNNING
-        self._previous_update_time = dt.now()
+        self._run_status = _Status.Running
+        self._previous_update_time = datetime.now()
 
     # def time_is_up(self, call_update=True) -> bool:
     #     if call_update:
@@ -76,10 +78,10 @@ class CountDowner:
         return self._remaining_time.total_seconds() <= 0
 
     def _update_time(self) -> None:
-        if self._run_status == _Status.STOPPED:
+        if self._run_status == _Status.Stopped:
             return
         assert self._previous_update_time is not None
-        time_passed = dt.now() - self._previous_update_time
+        time_passed = datetime.now() - self._previous_update_time
         self._previous_update_time += time_passed
         is_previous_time_up = self._time_is_up()
         self._remaining_time -= time_passed
@@ -87,17 +89,17 @@ class CountDowner:
             self._has_noti = True
 
     def stop(self) -> None:
-        if self._run_status == _Status.STOPPED:
+        if self._run_status == _Status.Stopped:
             return
         self._update_time()
-        self._run_status = _Status.STOPPED
+        self._run_status = _Status.Stopped
         self._previous_update_time = None
 
     def reset(self) -> None:
         """just convenient for usage only"""
         self.set()
 
-    def set(self, duration: Optional[delta] = None) -> None:
+    def set(self, duration: Optional[timedelta] = None) -> None:
         self.stop()
         if duration is not None:
             self.duration = duration
@@ -116,7 +118,7 @@ class CountDowner:
             self.reset()
 
     @staticmethod
-    def fmtDelta(t: delta) -> str:
+    def fmtDelta(t: timedelta) -> str:
         """format to hh:mm:ss"""
         ts = t.total_seconds()
         tm, ss = divmod(abs(ts), 60)
@@ -137,4 +139,4 @@ class CountDowner:
         self._has_noti = False
 
     def is_running(self) -> bool:
-        return self._run_status == _Status.RUNNING
+        return self._run_status == _Status.Running
